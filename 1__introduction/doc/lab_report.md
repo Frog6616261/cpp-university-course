@@ -496,6 +496,102 @@ git remote add origin git@github.com:Frog6616261/cpp-university-course.git
 git push origin master
 ```
 
+### 3.2 Create repo structure
 
+```bash
+mkdir 1__introdaction
+mkdir 2__cpp_and_python_compare
 
+cd 1_introdation
+mkdir build src doc
+
+cd ../2__cpp_and_python_compare
+mkdir build src doc cmake
+```
+
+### 3.3 Create new branches and rm old
+
+```bash
+git checkout -b dev
+git push -u origin dev
+
+git checkout -b stg
+git push -u origin stg
+
+git checkout -b prd
+git push -u origin prd
+```
+
+#### Delete branch on GitHub repo
+Need reset default branch on GitHub repo
+
+```bash
+git branch -d master
+git push origin --delete master
+```
+
+### 3.4 Create script dev -> stg
+```bash
+nano promote_dev_to_stg.sh
+```
+#### Bash script
+
+```bash
+set -e
+
+git fetch origin
+
+git checkout stg
+
+git pull origin stg
+
+git merge origin/dev
+
+TAG="stg-$(date +%Y%m%d-%H%M%S)"
+
+git tag $TAG
+
+git push origin stg
+
+git push origin $TAG
+
+echo "Merge dev → stg completed. Tag: $TAG"
+```
+
+#### Set chmod
+```bash
+sudo chmod 770  promote_dev_to_stg.sh
+```
+
+### 3.5 Create script stg -> prd
+```bash
+nano promote_stg_to_prd.sh
+```
+#### Bash script
+
+```bash
+set -e
+
+git fetch origin
+
+git checkout prd
+
+git pull origin prd
+
+git merge origin/stg
+
+TAG="prd-$(date +%Y%m%d-%H%M%S)"
+
+git tag $TAG
+
+git push origin prd
+
+git push origin $TAG
+
+echo "Merge stg → prd completed. Tag: $TAG"
+```
+#### Set chmod
+```bash
+sudo chmod 770  promote_stg_to_prd.sh 
+```
 
