@@ -1,84 +1,221 @@
-# C++ BUILD / IF / LOOP, PYTHON
-
-## Task 1 — C++ Expression Program
-
-### Goal
-Develop and compile a C++ program that evaluates a mathematical expression multiple times and measures execution time.
-
-### Requirements
-- Build output must be stored in the `build/` directory.
-- The `build/` directory must be added to `.gitignore`.
-
-### Program Behavior
-- Read an integer `n` from standard input — number of iterations.
-- If the input is not a valid number → terminate the program.
-
-### Computation
-- For each iteration, compute the expression:
-
-  $x^2 - x^2 + x \cdot 4 - x \cdot 5 + x + x$
-
-### Structure
-- Implement the expression in a separate function.
-- Call this function repeatedly from `main()` using a loop.
-
-### Timing
-- Measure total execution time for `n` iterations.
-
-### Additional Behavior
-- After execution, prompt user to rerun the program.
-- If user declines → terminate program.
+# Laboratory Work #3  
+## C++ & UNIX: CLI / FUNCTION / LOOP / RECURSION
 
 ---
 
-## Task 2 — Python Expression Program
+# 1. Task Description
 
-### Goal
-Develop a Python 3 program with identical functionality to the C++ version.
+The objective of this laboratory work was to study basic algorithmic constructions in C++ and apply them in command-line applications. The work also demonstrates the efficiency of recursive algorithms.
 
-### Requirements
-- Store compiled/intermediate results in `build/`.
-- Add `build/` to `.gitignore`.
+The laboratory work consisted of two main tasks:
 
-### Program Behavior
-- Read integer `n` from input.
-- If input is invalid → terminate.
+## 1.1 CLI Calculator
 
-### Computation
-- Evaluate the same expression:
+Develop a command-line calculator application named `CALC` that accepts three arguments:
 
-  $x^2 - x^2 + x \cdot 4 - x \cdot 5 + x + x$
+- first operand;
+- arithmetic operator;
+- second operand.
 
-### Structure
-- Place computation in a separate function.
-- Call it iteratively from `main`.
+Supported operators:
 
-### Timing
-- Measure total execution time for `n` evaluations.
+- `+`
+- `-`
+- `*`
+- `^`
 
-### Additional Behavior
-- Allow repeated execution via user prompt.
+The implementation had to use only:
+
+- functions;
+- conditions;
+- loops;
+- arithmetic operations.
 
 ---
 
-## Task 3 — Repository & Version Control
+## 1.2 Tower of Hanoi
 
-### Goal
-Store results and organize version control workflow.
+Implement the classical Tower of Hanoi problem using recursion.
 
-### Requirements
-- Save all code and outputs in a Git repository.
-- Add a report to the `doc/` directory.
+Requirements:
 
-### Branching Strategy
-- All commits must go through the `dev` branch.
+- move all disks from the source tower to the destination tower;
+- obey the Tower of Hanoi rules;
+- store the resulting sequence of moves;
+- print the full sequence to the console.
 
-### Deployment
-- Provide scripts to:
-  - Promote changes from `dev` → `stg` → `prd`
-  - Roll back to the current revision state (including uncommitted changes and new files)
+The implementation also included a brute-force recursive search for arbitrary tower configurations.
 
-### Scripts
-- Place all scripts in the repository root.
+---
 
+# 2. Code Description
 
+## 2.1 CLI Calculator
+
+The calculator application was implemented as a command-line utility that parses input arguments and performs arithmetic operations.
+
+### Implemented Functions
+
+The following arithmetic functions were implemented:
+
+```cpp
+double sum(double a, double b);
+double minus(double a, double b);
+double mult(double a, double b);
+double power(double base, uint power);
+```
+
+The `power()` function computes exponentiation using iterative multiplication inside a loop.
+
+---
+
+### Operator Parsing
+
+An enumeration was introduced to represent supported operators:
+
+```cpp
+enum calc_operators {
+    PLUS,
+    MINUS,
+    MULT,
+    POWER,
+    NO_OPERATORS
+};
+```
+
+The function:
+
+```cpp
+calc_operators parse_operator(const std::string& str);
+```
+
+converts a string operator into the corresponding enumeration value.
+
+---
+
+### Command Line Interface
+
+The program accepts arguments in the following format:
+
+```bash
+calc <number1> <operator> <number2>
+```
+
+Example:
+
+```bash
+calc 2 ^ 5
+```
+
+The application validates the number of arguments, converts string values into floating-point numbers using `std::stod`, and executes the requested operation using a `switch` statement.
+
+---
+
+# 2.2 Tower of Hanoi
+
+The second program implements the Tower of Hanoi problem using recursion and stack-based tower representation.
+
+---
+
+## Towers Representation
+
+A structure named `Towers` was implemented:
+
+```cpp
+struct Towers
+```
+
+The structure contains:
+
+- number of towers;
+- number of disks;
+- vector of stacks representing towers.
+
+Initialization places all disks onto the first tower.
+
+---
+
+## Recursive Hanoi Algorithm
+
+The classical recursive algorithm was implemented in the function:
+
+```cpp
+void hanoi(uint n, uint from, uint to, uint temp, way_stack& way);
+```
+
+Algorithm steps:
+
+1. Move `n - 1` disks to the temporary tower.
+2. Move the largest disk to the destination tower.
+3. Move `n - 1` disks from the temporary tower to the destination tower.
+
+The resulting sequence of moves is stored in:
+
+```cpp
+using way_stack = std::vector<std::pair<uint, uint>>;
+```
+
+Each pair represents a move:
+
+```cpp
+(from_tower, to_tower)
+```
+
+---
+
+## Brute Force Recursive Search
+
+An additional recursive brute-force algorithm was implemented:
+
+```cpp
+void search_hanonian_bruforce(...)
+```
+
+The algorithm:
+
+- recursively explores all valid moves;
+- checks stack constraints;
+- stores the shortest valid solution;
+- avoids invalid reverse moves.
+
+The maximum recursion depth is limited by:
+
+```cpp
+MAX_ITER
+```
+
+to reduce unnecessary recursive calls.
+
+---
+
+## Program Execution
+
+The application accepts command-line arguments:
+
+```bash
+towers <number_of_plates> <number_of_towers>
+```
+
+Example:
+
+```bash
+towers 3 3
+```
+
+The resulting sequence of moves is printed to the console.
+
+---
+
+# 3. Conclusion
+
+During this laboratory work, command-line applications in C++ were implemented using:
+
+- functions;
+- loops;
+- conditions;
+- recursion;
+- stacks;
+- vectors;
+- recursive search algorithms.
+
+The work demonstrated practical usage of recursion through the Tower of Hanoi problem and introduced basic CLI program architecture in C++.
