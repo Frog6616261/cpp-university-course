@@ -1,81 +1,61 @@
 #include <iostream>
-#include <string>
+#include <cstdlib>
+#include <cassert>
 
+double add(double a, double b);
+double sub(double a, double b);
+double pow(double a, int b);
 
-double sum(double a, double b){
-    return a + b;
+int main(int argc, char const **argv){
+    assert(argc == 4); // 
+
+    double x1 = std::atof(argv[1]); 
+    double x2 = std::atof(argv[3]);
+    char op = *argv[2];
+
+    double res = 0; 
+
+    switch(op) {
+        case '+': {
+            res = add(x1, x2); 
+            break;
+        } 
+        case '-': {
+            res = sub(x1, x2); 
+            break;
+        }
+        case '^': {
+            res = pow(x1, x2); 
+            break; 
+        }
+        default: {
+            std::cout << "[ERROR] Only +, - and ^ operations can be used.";
+            break;
+        }
+    }
+
+    std:: cout << x1 << op << x2 << " = " << res << "\n";
+
+    return 0; 
 }
 
-double mult(double a, double b){
-    return a * b;
+double add(double a, double b) {
+    return a + b; 
 }
 
-double minus(double a, double b){
+double sub(double a, double b) {
     return a - b;
 }
 
-double power(double base, uint power) {
-    double result = 1;
+double pow(double a, int b){
+    double ans = 1; 
 
-    for (uint i = 0; i < power; ++i) {
-        result = mult(result,base);
+    double coeff = b >= 0 ? a : (double)1 / a; 
+    int abs_b = b >=0 ? b : -b; 
+ 
+    for(int i=0; i < abs_b; i++){
+        ans *= coeff; 
     }
 
-    return result;
-}
-
-enum calc_operators {
-    PLUS,
-    MINUS,
-    MULT,
-    POWER,
-    NO_OPERATORS
-};
-
-calc_operators parse_operator(const std::string& str){
-    if (str == "+") return PLUS;
-    if (str == "-") return MINUS;
-    if (str == "*") return MULT;
-    if (str == "^") return POWER;
-
-    return NO_OPERATORS;
-}
-
-int main(int argc, char* argv[]) {
-    if (argc != 4) {
-        std::cout << "Usage: calc <num1 double> <op: \"+\", \"-\", \"*\", \"^\"> <num2 double>\n";
-        return 1;
-    }
-
-    double a = std::stod(argv[1]);
-    std::string op = argv[2];
-    double b = std::stod(argv[3]);
-
-    double result = 0;
-
-    calc_operators cur_operator = parse_operator(op);
-
-    switch (cur_operator) {
-        case PLUS:
-            result = sum(a, b);
-            break;
-        case MINUS:
-            result = minus(a, b);
-            break; 
-        case MULT:
-            result = mult(a, b);
-            break; 
-        case POWER:
-            result = power(a, b);
-            break; 
-        
-        default:
-            std::cout << "Not correct operator" << result << std::endl;
-            return -1;
-            break;    
-    }
-
-    std::cout << "Result: " << result << std::endl;
-
-    return 0;
+    return ans; 
 }
