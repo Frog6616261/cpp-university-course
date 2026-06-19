@@ -1,0 +1,65 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build debug",
+            "type": "process",
+            "command": "/usr/bin/bash",
+            "args": [
+                "-lc",
+                "mkdir -p build && /usr/bin/g++ -std=c++17 -g3 -O0 -Wall -Wextra -Wpedantic -I include src/*.cpp -o build/main"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "run",
+            "type": "process",
+            "command": "/usr/bin/bash",
+            "args": [
+                "-lc",
+                "./build/main"
+            ],
+            "dependsOn": "build debug",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "run with program.txt",
+            "type": "process",
+            "command": "/usr/bin/bash",
+            "args": [
+                "-lc",
+                "./build/main program.txt"
+            ],
+            "dependsOn": "build debug",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "clean",
+            "type": "process",
+            "command": "/usr/bin/bash",
+            "args": [
+                "-lc",
+                "rm -f build/main"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        }
+    ]
+}
